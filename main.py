@@ -4,7 +4,6 @@ from trie import Trie
 
 root = Trie()
 size_count = 0
-out = []
 
 for raw in sys.stdin:
     line = raw.rstrip("\n")
@@ -37,5 +36,3 @@ for raw in sys.stdin:
             print("none")
         else:
             print(','.join(root.prefix(arg)))
-
-print("\n".join(out))
