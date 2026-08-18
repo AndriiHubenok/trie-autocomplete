@@ -48,3 +48,24 @@ class Trie:
             count += child.nodes()
 
         return count
+
+    def prefix(self, word):
+        node = self
+        prefix = ''
+
+        for char in word:
+            if char not in node.children:
+                return []
+            node = node.children[char]
+            prefix += char
+
+        results = []
+        self.dfs(node, prefix, results)
+        return results
+
+    def dfs(self, node, prefix, words):
+        if node.is_end:
+            words.append(prefix)
+
+        for char, child in node.children.items():
+            self.dfs(child, prefix + char, words)
