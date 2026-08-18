@@ -1,9 +1,6 @@
 import sys
 
-class Trie:
-    def __init__(self):
-        self.children = {}
-        self.is_end = False
+from trie import Trie
 
 root = Trie()
 size_count = 0
@@ -15,16 +12,16 @@ for raw in sys.stdin:
     parts = line.split(" ", 1)
     cmd = parts[0]; arg = parts[1] if len(parts) > 1 else ""
     if cmd == "INSERT":
-        # TODO: walk `arg` from root, creating a Trie() node for any missing
-        # character. Mark the final node's is_end = True; if it wasn't
-        # already an end node, increment size_count. Append "OK" to out.
-        pass
+        root.insert(arg)
+        print("OK")
+
     elif cmd == "CONTAINS":
-        # TODO: walk `arg` from root. If any character is missing, append
-        # "NO". Otherwise append "YES" if the final node's is_end is True,
-        # else "NO".
-        pass
+        if root.contains(arg):
+            print("YES")
+        else:
+            print("NO")
+
     elif cmd == "SIZE":
-        out.append(str(size_count))
+        print(root.size())
 
 print("\n".join(out))
