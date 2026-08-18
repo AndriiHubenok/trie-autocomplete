@@ -24,6 +24,31 @@ class Trie:
 
         return node.is_end
 
+    def delete(self, word: str):
+        node = self
+        letters_nodes = [node]
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+            letters_nodes.append(node)
+
+        letters_nodes.reverse()
+        index = len(word) - 1
+
+        for n in letters_nodes[1:]:
+            del n.children[word[index]]
+            n.frequency -= 1
+
+            if len(n.children) > 0:
+                return True
+            else:
+                n.is_end = True
+
+            index -= 1
+
+        return True
+
     def size(self) -> int:
         count = 1 if self.is_end else 0
 
