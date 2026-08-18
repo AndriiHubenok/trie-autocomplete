@@ -13,7 +13,6 @@ for raw in sys.stdin:
     cmd = parts[0]; arg = parts[1] if len(parts) > 1 else ""
     if cmd == "INSERT":
         root.insert(arg)
-        print("OK")
 
     elif cmd == "CONTAINS":
         if root.contains(arg):
@@ -23,5 +22,11 @@ for raw in sys.stdin:
 
     elif cmd == "SIZE":
         print(root.size())
+
+    elif cmd == "FREQ":
+        print(root.freq(arg))
+
+    elif cmd == "NODES":
+        print(root.nodes())
 
 print("\n".join(out))
