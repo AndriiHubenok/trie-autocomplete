@@ -35,4 +35,4 @@ for raw in sys.stdin:
         if len(results) == 0:
             print("none")
         else:
-            print(','.join(root.prefix(arg)))
+            print(','.join(results))
