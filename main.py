@@ -1,8 +1,9 @@
 import sys
 
+from radix_trie import RadixTrie
 from trie import Trie
 
-root = Trie()
+root = RadixTrie()
 size_count = 0
 
 for raw in sys.stdin:
@@ -12,6 +13,7 @@ for raw in sys.stdin:
     cmd = parts[0]; arg = parts[1] if len(parts) > 1 else ""
     if cmd == "INSERT":
         root.insert(arg)
+        print("OK")
 
     elif cmd == "CONTAINS":
         if root.contains(arg):
