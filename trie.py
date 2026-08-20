@@ -9,11 +9,15 @@ class Trie:
         for char in word:
             if char not in node.children:
                 node.children[char] = Trie()
-                node.children[char].frequency = frequency
+                node.children[char].frequency = 0
 
             node = node.children[char]
 
-        node.is_end = True
+        if node.is_end:
+            node.frequency += frequency
+        else:
+            node.is_end = True
+            node.frequency = frequency
 
     def contains(self, word: str) -> bool:
         node = self
@@ -24,28 +28,31 @@ class Trie:
 
         return node.is_end
 
-    def delete(self, word: str):
+    def delete(self, word: str) -> bool:
         node = self
-        letters_nodes = [node]
+        path = [node]
+
         for char in word:
             if char not in node.children:
                 return False
             node = node.children[char]
-            letters_nodes.append(node)
+            path.append(node)
 
-        letters_nodes.reverse()
-        index = len(word) - 1
+        if not node.is_end:
+            return False
 
-        for n in letters_nodes[1:]:
-            del n.children[word[index]]
-            n.frequency -= 1
+        node.is_end = False
+        node.frequency = 0
 
-            if len(n.children) > 0:
-                return True
+        for i in range(len(word) - 1, -1, -1):
+            parent = path[i]
+            child_char = word[i]
+            child_node = path[i + 1]
+
+            if len(child_node.children) == 0 and not child_node.is_end:
+                del parent.children[child_char]
             else:
-                n.is_end = True
-
-            index -= 1
+                break
 
         return True
 
