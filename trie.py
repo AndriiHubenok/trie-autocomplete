@@ -1,6 +1,3 @@
-from pygments.lexer import words
-
-
 class Trie:
     def __init__(self):
         self.children = {}
