@@ -10,8 +10,7 @@ class Trie:
             if char not in node.children:
                 node.children[char] = Trie()
                 node.children[char].frequency = frequency
-            # else:
-            #     node.children[char].frequency += frequency
+
             node = node.children[char]
 
         node.is_end = True
@@ -61,6 +60,36 @@ class Trie:
         self.dfs(node, prefix, results)
         results.sort(key=lambda x: (-x.freq, x.word))
         return results[:k]
+
+    def fuzzy(self, query: str, k: int) -> list:
+        results = []
+        first_row = list(range(len(query) + 1))
+
+        if self.is_end and first_row[-1] <= k:
+            results.append(("", first_row[-1]))
+
+        for char, child in self.children.items():
+            self._fuzzy_dfs(child, char, char, first_row, query, k, results)
+
+        return results
+
+    def _fuzzy_dfs(self, node, char, current_word, prev_row, query, k, results):
+        columns = len(query) + 1
+        curr_row = [prev_row[0] + 1]
+
+        for i in range(1, columns):
+            insert_cost = curr_row[i - 1] + 1
+            delete_cost = prev_row[i] + 1
+            replace_cost = prev_row[i - 1] + (0 if query[i - 1] == char else 1)
+
+            curr_row.append(min(insert_cost, delete_cost, replace_cost))
+
+        if node.is_end and curr_row[-1] <= k:
+            results.append((current_word, curr_row[-1]))
+
+        if min(curr_row) <= k:
+            for next_char, child in node.children.items():
+                self._fuzzy_dfs(child, next_char, current_word + next_char, curr_row, query, k, results)
 
     def size(self) -> int:
         count = 1 if self.is_end else 0

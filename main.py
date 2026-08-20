@@ -33,6 +33,17 @@ for raw in sys.stdin:
         else:
             print(','.join([str(result) for result in results]))
 
+    elif cmd == "FUZZY":
+        k = int(arg2) if arg2 else 0
+        results = root.fuzzy(arg, k)
+
+        if len(results) == 0:
+            print("none")
+        else:
+            results.sort(key=lambda x: x[0])
+            formatted_results = [f"{word}({dist})" for word, dist in results]
+            print(",".join(formatted_results))
+
     elif cmd == "SIZE":
         print(root.size())
 
